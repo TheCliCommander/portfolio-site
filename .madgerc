@@ -1,0 +1,13 @@
+{
+  "detectiveOptions": {
+    "ts": {
+      "skipTypeImports": true
+    }
+  },
+  "fileExtensions": ["js", "vue"],
+  "excludeRegExp": [
+    "node_modules",
+    "dist"
+  ],
+  "webpackConfig": "./node_modules/@vue/cli-service/webpack.config.js"
+}

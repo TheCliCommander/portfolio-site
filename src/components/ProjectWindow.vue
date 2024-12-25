@@ -6,7 +6,8 @@
           <span class="user">user</span>
           <span class="separator">@</span>
           <span class="hostname">localhost</span>
-          <span class="separator">:~</span>
+          <span class="separator">:~/{{ project.title }}$</span>
+          <span class="title-text">{{ project.title }}</span>
         </div>
         <div class="window-controls">
           <button class="minimize" @click="minimize">−</button>
@@ -49,7 +50,8 @@ export default {
       this.isMinimized = true;
       this.$emit("minimize", this.project);
     },
-    toggleMaximize() {
+    toggleMaximize(event) {
+      event.stopPropagation();
       this.isMaximized = !this.isMaximized;
     },
   },
@@ -77,6 +79,7 @@ export default {
   max-width: 800px;
   height: 60vh;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .window-header {
@@ -130,14 +133,36 @@ export default {
 }
 
 .window.maximized {
+  position: fixed;
+  top: 36px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 36px);
+  max-width: none;
   border-radius: 0;
+  margin: 0;
+  transition: all 0.3s ease;
 }
 
 .window-content {
   padding: 20px;
   height: calc(100% - 76px);
   overflow-y: auto;
+}
+
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  max-height: 500px;
+}
+
+.video-wrapper video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 </style>

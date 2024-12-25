@@ -1,21 +1,27 @@
 <template>
   <div class="window-container" :class="{ shrink: loadingComplete }">
-    <div class="window">
+    <div class="window" :class="{ maximized: isMaximized }">
       <div class="window-header">
         <div class="window-title">
-          <span class="user">linuxiac</span>
+          <span class="user">user</span>
           <span class="separator">@</span>
-          <span class="hostname">ruah-gnome</span>
-          <span class="separator">:~</span>
+          <span class="hostname">localhost</span>
+          <span class="separator">:/usr/bin/michael-ryberg$</span>
         </div>
         <div class="window-controls">
           <button class="minimize">−</button>
-          <button class="maximize">□</button>
+          <button class="maximize" @click="toggleMaximize">□</button>
           <button class="close">×</button>
         </div>
       </div>
       <div class="window-content">
         <div class="terminal">
+          <div class="terminal-prompt">
+            <span class="user">user</span>
+            <span class="separator">@</span>
+            <span class="hostname">localhost</span>
+            <span class="separator">:/usr/bin$</span>
+          </div>
           <div class="terminal-output">
             <div
               v-for="(message, index) in terminalMessages"
@@ -38,12 +44,15 @@ export default {
   data() {
     return {
       loadingComplete: false,
+      isMaximized: false,
       terminalMessages: [],
       wordList: [
         "sudo apt-get install michael-ryberg",
         "Installing professional developer package...",
         "Loading Vue.js expertise...",
-        "Importing JavaScript mastery...",
+        "Importing JavaScript expertise...",
+        "Importing Python mastery...",
+        "Importing C# skills...",
         "Analyzing code quality: EXCELLENT",
         "Testing problem-solving capabilities: 100%",
         "Checking Linux administration skills: ADVANCED",
@@ -115,6 +124,9 @@ export default {
         }
       }, 1000);
     },
+    toggleMaximize() {
+      this.isMaximized = !this.isMaximized;
+    },
   },
 };
 </script>
@@ -143,6 +155,20 @@ export default {
   width: 100%;
   height: 100%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.window.maximized {
+  position: fixed;
+  top: 36px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(100vh - 36px);
+  max-width: none;
+  border-radius: 0;
+  margin: 0;
 }
 
 .window-header {
@@ -202,7 +228,15 @@ export default {
   background: #1e1e1e;
 }
 
+.terminal-output {
+  padding-left: 2.5rem;
+  font-family: monospace;
+  font-size: 14px;
+  color: #ffffff;
+}
+
 .terminal-line {
+  padding-left: 1.5rem;
   color: #ffffff;
   opacity: 0;
   transform: translateY(5px);
@@ -215,5 +249,22 @@ export default {
 .terminal-line.fade-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+.terminal-prompt {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+  font-family: monospace;
+}
+
+.terminal-prompt .user {
+  color: #729fcf;
+}
+.terminal-prompt .hostname {
+  color: #729fcf;
+}
+.terminal-prompt .separator {
+  color: #d3d3d3;
 }
 </style>

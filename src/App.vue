@@ -268,12 +268,14 @@ export default {
       const isClickInsideTerminal = event.target.closest(".terminal");
       const isClickInsideVideo = event.target.closest(".video-container video");
       const isClickInsideHoverImage = event.target.closest(".hover-image");
+      const isClickInsideWindow = event.target.closest(".window");
 
       if (
         isClickInsideDock ||
         isClickInsideTerminal ||
         isClickInsideVideo ||
-        isClickInsideHoverImage
+        isClickInsideHoverImage ||
+        isClickInsideWindow
       ) {
         return;
       }

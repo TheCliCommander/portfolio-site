@@ -285,22 +285,30 @@ body {
 }
 
 .desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   opacity: 0;
-  min-height: 100vh;
-  transition: all is cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: bottom-center;
 }
+
 .desktop.fade-in {
   opacity: 1;
 }
+
 .desktop.transition-cut {
   transform: scale(0);
   opacity: 0;
   transition: all is cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .dock {
   transition: opacity 0.5s ease;
 }
+
 .dock.fade-out {
   opacity: 0;
 }
@@ -338,6 +346,7 @@ body {
 .activities-button:hover {
   color: var(--accent-blue);
 }
+
 .activities-menu {
   position: absolute;
   top: 28px;
@@ -362,9 +371,11 @@ body {
 }
 
 .desktop-content {
+  height: 100vh;
   padding: 60px 20px;
   color: white;
   text-align: center;
+  overflow: hidden;
 }
 
 .bio-container {
@@ -630,22 +641,42 @@ body {
 }
 
 .text-1 {
-  animation: flashText 1s linear infinite;
+  animation: mainText 5s linear infinite;
 }
 
 .text-2 {
-  animation: flashText 1s linear infinite reverse;
+  animation: subliminalText 5s linear infinite;
 }
 
-@keyframes flashText {
+@keyframes mainText {
   0%,
-  45%,
+  94%,
+  96%,
+  98%,
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateZ(0);
+  }
+  95%,
+  97%,
+  99% {
+    opacity: 0;
+    transform: translateX(-50%) translateZ(20px);
+  }
+}
+
+@keyframes subliminalText {
+  0%,
+  94%,
+  96%,
+  98%,
   100% {
     opacity: 0;
     transform: translateX(-50%) translateZ(20px);
   }
-  50%,
-  95% {
+  95%,
+  97%,
+  99% {
     opacity: 1;
     transform: translateX(-50%) translateZ(0);
   }

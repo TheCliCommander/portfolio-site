@@ -1,18 +1,31 @@
 <template>
-  <div class="terminal-container" :class="{ shrink: loadingComplete }">
-    <div class="terminal">
-      <div class="terminal-prompt">
-        <span class="user">user@localhost</span>
-        <span class="separator">-$:</span>
+  <div class="window-container" :class="{ shrink: loadingComplete }">
+    <div class="window">
+      <div class="window-header">
+        <div class="window-title">
+          <span class="user">linuxiac</span>
+          <span class="separator">@</span>
+          <span class="hostname">ruah-gnome</span>
+          <span class="separator">:~</span>
+        </div>
+        <div class="window-controls">
+          <button class="minimize">−</button>
+          <button class="maximize">□</button>
+          <button class="close">×</button>
+        </div>
       </div>
-      <div class="terminal-output">
-        <div
-          v-for="(message, index) in terminalMessages"
-          :key="index"
-          :class="['terminal-line', { 'fade-in': message.visible }]"
-          :style="{ transitionDelay: `${index * 50}ms` }"
-        >
-          {{ message.text }}
+      <div class="window-content">
+        <div class="terminal">
+          <div class="terminal-output">
+            <div
+              v-for="(message, index) in terminalMessages"
+              :key="index"
+              :class="['terminal-line', { 'fade-in': message.visible }]"
+              :style="{ transitionDelay: `${index * 50}ms` }"
+            >
+              {{ message.text }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -107,7 +120,7 @@ export default {
 </script>
 
 <style scoped>
-.terminal-container {
+.window-container {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -115,35 +128,78 @@ export default {
   width: 80vw;
   max-width: 800px;
   height: 80vh;
-  margin: 0;
-  border-radius: 8px;
-  transition: all 1s ease;
-  z-index: 100;
-  background: rgba(18, 18, 18, 0.95);
+  z-index: 2000;
 }
 
-.terminal-container.shrink {
-  transform: scale(0);
+.window-container.shrink {
+  transform: translate(-50%, -50%) scale(0);
   opacity: 0;
   pointer-events: none;
 }
 
-.terminal-prompt {
-  color: #00ff00;
-  margin-bottom: 1rem;
-  font-weight: bold;
+.window {
+  background: #1e1e1e;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.window-header {
+  background: #2d2d2d;
+  padding: 8px 12px;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+}
+
+.window-title {
+  color: #d3d3d3;
+  font-size: 13px;
+  display: flex;
+  gap: 4px;
 }
 
 .user {
-  color: #00ff00;
+  color: #729fcf;
 }
-
+.hostname {
+  color: #729fcf;
+}
 .separator {
-  color: #ff9900;
+  color: #d3d3d3;
 }
 
-.terminal-output {
-  padding-left: 0.5rem;
+.window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.window-controls button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #d3d3d3;
+  background: transparent;
+}
+
+.window-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.window-content {
+  padding: 20px;
+  height: calc(100% - 76px);
+  overflow-y: auto;
+  background: #1e1e1e;
 }
 
 .terminal-line {
@@ -153,33 +209,11 @@ export default {
   transition: all 0.2s ease;
   margin: 0.1rem 0;
   white-space: nowrap;
+  font-family: monospace;
 }
 
 .terminal-line.fade-in {
   opacity: 1;
   transform: translateY(0);
-}
-
-.terminal-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.terminal-container::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-.terminal-container::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
-.terminal-container::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-
-.terminal {
-  padding: 20px;
-  height: 100%;
-  overflow-y: auto;
 }
 </style>

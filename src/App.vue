@@ -25,6 +25,16 @@
           <div class="menu-item" @click="handleMenuClick('cli')">
             Command Line Tools
           </div>
+          <div v-if="minimizedProjects.length" class="menu-separator"></div>
+          <div
+            v-for="project in minimizedProjects"
+            :key="project.id"
+            class="menu-item"
+            @click="restoreProject(project)"
+          >
+            <img :src="project.icon" class="menu-item-icon" />
+            {{ project.title }}
+          </div>
         </div>
         <div class="clock">{{ currentTime }}</div>
         <div class="system-tray">
@@ -54,7 +64,7 @@
           v-for="project in projects"
           :key="project.id"
           class="dock-icon"
-          @click="openProject(project)"
+          @click.stop="openProject(project)"
           @mouseover="setHoveredProject(project)"
           @mouseleave="clearHoveredProject"
         >
@@ -149,6 +159,7 @@ export default {
       showVideo: false,
       showTerminal: false,
       terminalMessages: [],
+      minimizedProjects: [],
     };
   },
   methods: {
@@ -169,8 +180,10 @@ export default {
       this.hoveredProject = null;
     },
     closeProject() {
+      this.minimizedProjects = this.minimizedProjects.filter(
+        (p) => p.id !== this.activeProject.id
+      );
       this.activeProject = null;
-      this.hoveredProject = null;
     },
     openCapitalWorker() {
       this.isTransitioningToTCW = true;
@@ -237,15 +250,30 @@ export default {
           break;
       }
     },
+    handleMinimize(project) {
+      this.minimizedProjects.push(project);
+    },
+    restoreProject(project) {
+      this.minimizedProjects = this.minimizedProjects.filter(
+        (p) => p.id !== project.id
+      );
+      this.activeProject = project;
+    },
   },
   mounted() {
     setInterval(this.updateTime, 1000);
     this.updateTime();
     document.addEventListener("click", (event) => {
+      const isClickInsideDock = event.target.closest(".dock-icon");
+      const isClickInsideTerminal = event.target.closest(".terminal");
+      const isClickInsideVideo = event.target.closest(".video-container video");
+      const isClickInsideHoverImage = event.target.closest(".hover-image");
+
       if (
-        event.target.closest(".dock-icon") ||
-        event.target.closest(".terminal") ||
-        event.target.closest(".video-container video")
+        isClickInsideDock ||
+        isClickInsideTerminal ||
+        isClickInsideVideo ||
+        isClickInsideHoverImage
       ) {
         return;
       }

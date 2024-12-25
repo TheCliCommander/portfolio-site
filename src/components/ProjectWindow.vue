@@ -1,34 +1,60 @@
 <template>
-  <div class="window-container" @click.self="$emit('close')">
-    <div class="window">
+  <div class="window-container" :class="{ minimized: isMinimized }">
+    <div class="window" :class="{ maximized: isMaximized }">
       <div class="window-header">
-        <div class="window-title">{{ project.title }}</div>
+        <div class="window-title">
+          <span class="user">user</span>
+          <span class="separator">@</span>
+          <span class="hostname">localhost</span>
+          <span class="separator">:~</span>
+        </div>
         <div class="window-controls">
-          <button class="minimize">−</button>
-          <button class="maximize">□</button>
+          <button class="minimize" @click="minimize">−</button>
+          <button class="maximize" @click="toggleMaximize">□</button>
           <button class="close" @click="$emit('close')">×</button>
         </div>
       </div>
       <div class="window-content">
-        <!-- Video Content -->
-        <div
-          v-if="project.video && !project.video.includes('youtube')"
-          class="video-wrapper"
-        >
+        <div v-if="project.video" class="video-wrapper">
           <video :src="project.video" controls></video>
         </div>
-        <!-- Website Project Content -->
-        <div v-else-if="project.website" class="website-content">
-          <h2>{{ project.title }}</h2>
+        <div v-else-if="project.image" class="image-wrapper">
+          <img :src="project.image" :alt="project.title" />
+        </div>
+        <div class="project-description">
           <p>{{ project.description }}</p>
-          <a :href="project.website" target="_blank" class="website-link"
-            >Visit Website</a
-          >
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "ProjectWindow",
+  props: {
+    project: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isMinimized: false,
+      isMaximized: false,
+    };
+  },
+  methods: {
+    minimize() {
+      this.isMinimized = true;
+      this.$emit("minimize", this.project);
+    },
+    toggleMaximize() {
+      this.isMaximized = !this.isMaximized;
+    },
+  },
+};
+</script>
 
 <style scoped>
 .window-container {
@@ -45,59 +71,73 @@
 }
 
 .window {
-  background: var(--dark-bg);
+  background: #1e1e1e;
   border-radius: 8px;
   width: 80%;
   max-width: 800px;
-  max-height: 80vh;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  height: 60vh;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .window-header {
-  background: var(--top-bar-bg);
+  background: #2d2d2d;
   padding: 8px 12px;
   border-radius: 8px 8px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 36px;
 }
 
 .window-title {
-  color: white;
-  font-size: 14px;
+  color: #d3d3d3;
+  font-size: 13px;
+  display: flex;
+  gap: 4px;
+}
+
+.user {
+  color: #729fcf;
+}
+.hostname {
+  color: #729fcf;
+}
+.separator {
+  color: #d3d3d3;
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
 }
 
 .window-controls button {
+  width: 24px;
+  height: 24px;
   border: none;
-  background: none;
-  color: white;
-  font-size: 16px;
-  padding: 0 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  font-size: 16px;
+  color: #d3d3d3;
+  background: transparent;
+}
+
+.window-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.window.maximized {
+  width: 100%;
+  height: 100vh;
+  border-radius: 0;
 }
 
 .window-content {
   padding: 20px;
-  max-height: calc(80vh - 40px);
+  height: calc(100% - 76px);
   overflow-y: auto;
-}
-
-.video-wrapper video {
-  width: 100%;
-  border-radius: 4px;
-}
-
-.website-content {
-  color: white;
-}
-
-.website-link {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 8px 16px;
-  background: var(--accent-blue);
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
 }
 </style>

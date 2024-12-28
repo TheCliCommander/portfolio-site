@@ -26,16 +26,12 @@ export default {
 
 <style scoped>
 .window-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80vw;
-  height: 80vh;
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: #1e1e1e;
   border-radius: 8px;
   overflow: hidden;
-  z-index: 2000;
   display: flex;
   flex-direction: column;
   border: 1px solid #333;

@@ -71,9 +71,25 @@
           <img :src="project.icon" :alt="project.title" />
           <span class="tooltip">{{ project.title }}</span>
           <div v-if="hoveredProject === project" class="hover-image">
-            <img :src="project.image" :alt="project.title" />
+            <img
+              v-if="project.darkImage && project.lightImage"
+              :src="project.darkImage"
+              class="theme-image dark-theme"
+            />
+            <img
+              v-if="project.darkImage && project.lightImage"
+              :src="project.lightImage"
+              class="theme-image light-theme"
+            />
+            <img v-else :src="project.image" :alt="project.title" />
           </div>
         </div>
+      </div>
+      <div class="icons8-attribution">
+        Github link by
+        <a href="https://icons8.com/icon/LoL4bFzqmAa0/github">Icons8</a>
+        Documents icon by
+        <a href="https://icons8.com/icon/DVzc1vi8FDJt/document">Icons8</a>
       </div>
     </div>
 
@@ -93,7 +109,6 @@ import PassBox2 from "./components/images/PassBox2.png";
 import OnTime2 from "./components/images/OnTime2.png";
 import selfCutout from "./components/images/selfCutout.png";
 import ProjectWindow from "./components/ProjectWindow.vue";
-import TCWLogo from "./assets/images/TCWLogo.png";
 
 export default {
   name: "App",
@@ -126,12 +141,13 @@ export default {
         },
         {
           id: 2,
-          title: "Web Project",
-          icon: "/icons/web-browser.svg",
+          title: "Code Editor",
+          icon: "/icons/icons8-document-94.png",
+          darkImage: require("@/assets/images/darkMode.png"),
+          lightImage: require("@/assets/images/lightMode.png"),
           description:
-            "A freelance project for The Capital Worker, a local organization with whom my relationship is purely professional, regarding their website needs alone.Any views or opinions on the website are those of the customer(The Capital Worker) and not myself. The website is built with Vue.js/node.js/express.js/PostgreSQL. Hosted on Ionos VPS Debian 12 machine. Maintained entirely by myself. The org sends me articles they want uploaded and I have a script that formats them into json with html inline for text formatting which I use on Termux and scp them to the server. At that point another script is fired to restart the server and the new content is live. The site has two databases, one for the contact form and one for the forum.",
-          image: TCWLogo,
-          video: "https://thecapitalworker.com",
+            "A collaborative code editor with syntax highlighting and real-time collaboration features.",
+          isCodeEditor: true,
         },
         {
           id: 3,
@@ -149,10 +165,9 @@ export default {
         },
         {
           id: 5,
-          title: "Network Project",
-          icon: "/icons/network-workgroup.svg",
-          image: "placeholder-jpg",
-          video: "https://www.youtube.com/watch?v=your_video_id",
+          title: "Code Editor(IDE)",
+          icon: "/icons/icons8-github-94.png",
+          description: "A feature-rich integrated development environment...",
         },
       ],
       hoveredProject: null,
@@ -171,9 +186,9 @@ export default {
       this.currentTime = now.toLocaleTimeString();
     },
     openProject(project) {
-      if (project.id === 2) {
-        // Capital Worker project
-        this.openCapitalWorker();
+      if (project.isCodeEditor) {
+        this.activeProject = project;
+        this.hoveredProject = null;
         return;
       }
       this.activeProject = project;
@@ -185,41 +200,7 @@ export default {
       );
       this.activeProject = null;
     },
-    openCapitalWorker() {
-      this.isTransitioningToTCW = true;
-      setTimeout(() => {
-        window.location.href = "https://thecapitalworker.com";
-      }, 1000);
-    },
-    runTerminalCommand(project) {
-      this.terminalMessages = [
-        { text: `user@localhost:~$ cd '${project.title}'`, visible: true },
-        { text: `user@localhost:~/'${project.title}'$`, visible: false },
-        { text: `user@localhost:~/$./'${project.title}'`, visible: false },
-        { text: "Loading...", visible: false },
-      ];
-      this.showTerminal = true;
 
-      setTimeout(() => {
-        this.terminalMessages[1].visible = true;
-        setTimeout(() => {
-          this.terminalMessages[2].visible = true;
-          setTimeout(() => {
-            this.terminalMessages[3].visible = true;
-            setTimeout(() => {
-              this.showTerminal = false;
-              setTimeout(() => {
-                if (project.id === 3) {
-                  this.showVideo = true;
-                } else if (project.video) {
-                  window.open(project.video, "_blank");
-                }
-              }, 500);
-            }, 2000);
-          }, 1000);
-        }, 1000);
-      }, 1000);
-    },
     setHoveredProject(project) {
       this.hoveredProject = project;
     },
@@ -258,6 +239,9 @@ export default {
         (p) => p.id !== project.id
       );
       this.activeProject = project;
+    },
+    openCodeEditor() {
+      window.open("https://michaelryberg.github.io/code-editor/", "_blank");
     },
   },
   mounted() {
@@ -575,6 +559,32 @@ body {
   background: transparent;
 }
 
+.hover-image .theme-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hover-image .dark-theme {
+  opacity: 1;
+}
+
+.hover-image .light-theme {
+  opacity: 0;
+}
+
+.hover-image:hover .dark-theme {
+  opacity: 0;
+}
+
+.hover-image:hover .light-theme {
+  opacity: 1;
+}
+
 .video-container {
   position: fixed;
   top: 50%;
@@ -710,5 +720,22 @@ body {
     opacity: 1;
     transform: translateX(-50%) translateZ(0);
   }
+}
+
+.icons8-attribution {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.01);
+  font-size: 4px;
+  z-index: 1;
+  pointer-events: none;
+  margin-bottom: 2px;
+}
+
+.icons8-attribution a {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

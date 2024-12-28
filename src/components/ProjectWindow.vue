@@ -19,6 +19,9 @@
         <div v-if="project.video" class="video-wrapper">
           <video :src="project.video" controls></video>
         </div>
+        <div v-else-if="project.isCodeEditor" class="code-editor-wrapper">
+          <CodeEditor />
+        </div>
         <div v-else-if="project.image" class="image-wrapper">
           <img :src="project.image" :alt="project.title" />
         </div>
@@ -31,8 +34,13 @@
 </template>
 
 <script>
+import CodeEditor from "./CodeEditor/components/CodeEditor.vue";
+
 export default {
   name: "ProjectWindow",
+  components: {
+    CodeEditor,
+  },
   props: {
     project: {
       type: Object,
@@ -164,5 +172,11 @@ export default {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.code-editor-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 </style>

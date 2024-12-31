@@ -95,9 +95,33 @@ export default {
             },
             {
               title: "Python",
-              level: 85,
+              level: 86,
               description:
                 "Well versed in Python, my first language. I have developed countless applications and scripts.",
+            },
+            {
+              title: "SQL",
+              level: 85,
+              description:
+                "Firm understanding of SQL applied via Sqlite, MySQL, Postgresql, and Windows SQL Server.",
+            },
+            {
+              title: "Linux",
+              level: 87,
+              description:
+                "I have a solid understanding of Linux and have used it extensively for development and administration. I have worked with bash, zsh, and Windows Subsystem for Linux. I hold many Linux certificates from LinkedIn Learning.",
+            },
+            {
+              title: "Virtualization",
+              level: 90,
+              description:
+                "I have worked extensively with virtualization technologies. I have worked with VMWare, Hyper-V, and VirtualBox. I have also worked with Docker and Vagrant. I have a solid understanding of how to use these technologies to create and manage virtual machines and containers.",
+            },
+            {
+              title: "Networking",
+              level: 75,
+              description:
+                "I have a solid understanding of networking concepts and have worked with many networking technologies. I have worked with Cisco, Meraki, and SolarWinds. I have also worked with Splunk and Punchh to monitor and maintain networks.",
             },
             // Add more skills
           ],
@@ -111,7 +135,25 @@ export default {
               company: "Independence University",
               date: "2018 - 2019",
               description:
-                "Focus on Cybersecurity and Networking. Fincances kept me from finishing; pursuing certificates.",
+                "Focus on Cybersecurity and Networking. Fincances kept me from finishing; pursuing certificates. I have also independently studied computer science with a focus on security and netowkring. I have completed many LinkedIn Learning courses, with a focus on Linux and Python.",
+            },
+            {
+              title: "LinkedIn Learning",
+              level: 90,
+              description:
+                "I have completed many LinkedIn Learning courses, with a focus on Linux and Python.",
+            },
+            {
+              title: "Udemy",
+              level: 80,
+              description:
+                "I have completed many Udemy and similar free course sites courses, with a focus on Linux and Python. I have watched hundreds of hours of specialized training content and completed many projects along with them.",
+            },
+            {
+              title: "GED",
+              level: 100,
+              description:
+                "I have completed my GED and have a solid understanding of the material covered in the test.",
             },
           ],
         },

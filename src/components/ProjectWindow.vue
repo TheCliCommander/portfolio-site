@@ -10,7 +10,7 @@
           <span class="title-text">{{ project.title }}</span>
         </div>
         <div class="window-controls">
-          <button class="minimize" @click="minimize">−</button>
+          <button class="minimize" @click="handleMinimize">−</button>
           <button class="maximize" @click="toggleMaximize">□</button>
           <button class="close" @click="$emit('close')">×</button>
         </div>
@@ -22,10 +22,13 @@
         <div v-else-if="project.isCodeEditor" class="code-editor-wrapper">
           <CodeEditor />
         </div>
+        <div v-else-if="project.isResume" class="resume-wrapper">
+          <ResumeViewer />
+        </div>
         <div v-else-if="project.image" class="image-wrapper">
           <img :src="project.image" :alt="project.title" />
         </div>
-        <div class="project-description">
+        <div v-if="!project.isResume" class="project-description">
           <p>{{ project.description }}</p>
         </div>
       </div>
@@ -35,11 +38,13 @@
 
 <script>
 import CodeEditor from "./CodeEditor/components/CodeEditor.vue";
+import ResumeViewer from "./ResumeViewer.vue";
 
 export default {
   name: "ProjectWindow",
   components: {
     CodeEditor,
+    ResumeViewer,
   },
   props: {
     project: {
@@ -54,13 +59,23 @@ export default {
     };
   },
   methods: {
-    minimize() {
-      this.isMinimized = true;
+    handleMinimize() {
       this.$emit("minimize", this.project);
+      this.isMinimized = true;
     },
     toggleMaximize(event) {
       event.stopPropagation();
       this.isMaximized = !this.isMaximized;
+    },
+  },
+  watch: {
+    project: {
+      immediate: true,
+      handler(newProject) {
+        if (newProject) {
+          this.isMinimized = false;
+        }
+      },
     },
   },
 };
@@ -73,7 +88,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;

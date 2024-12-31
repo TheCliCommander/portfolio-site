@@ -15,16 +15,6 @@
           <div class="menu-item" @click="handleMenuClick('summary')">
             Professional Summary
           </div>
-          <div class="menu-item" @click="handleMenuClick('resume')">Resume</div>
-          <div class="menu-item" @click="handleMenuClick('web')">
-            Web Projects
-          </div>
-          <div class="menu-item" @click="handleMenuClick('desktop')">
-            Desktop Apps
-          </div>
-          <div class="menu-item" @click="handleMenuClick('cli')">
-            Command Line Tools
-          </div>
           <div v-if="minimizedProjects.length" class="menu-separator"></div>
           <div
             v-for="project in minimizedProjects"
@@ -32,7 +22,6 @@
             class="menu-item"
             @click="restoreProject(project)"
           >
-            <img :src="project.icon" class="menu-item-icon" />
             {{ project.title }}
           </div>
         </div>
@@ -99,6 +88,7 @@
       v-if="activeProject"
       :project="activeProject"
       @close="closeProject"
+      @minimize="handleMinimize"
     />
   </div>
 </template>
@@ -146,7 +136,7 @@ export default {
           darkImage: require("@/assets/images/darkMode.png"),
           lightImage: require("@/assets/images/lightMode.png"),
           description:
-            "A collaborative code editor with syntax highlighting and real-time collaboration features.",
+            "A collaborative code editor with syntax highlighting dark and light mode.",
           isCodeEditor: true,
         },
         {
@@ -158,16 +148,17 @@ export default {
         },
         {
           id: 4,
-          title: "System Admin",
+          title: "Resume",
           icon: "/icons/preferences-system.svg",
-          image: "placeholder-jpg",
-          video: "https://www.youtube.com/watch?v=your_video_id",
+          isResume: true,
+          description: "Interactive Resume",
         },
         {
           id: 5,
-          title: "Code Editor(IDE)",
+          title: "Github",
           icon: "/icons/icons8-github-94.png",
-          description: "A feature-rich integrated development environment...",
+          image: require("@/assets/images/GithubProfile.png"),
+          description: "My Github featuring more of my projects",
         },
       ],
       hoveredProject: null,
@@ -186,19 +177,29 @@ export default {
       this.currentTime = now.toLocaleTimeString();
     },
     openProject(project) {
-      if (project.isCodeEditor) {
+      if (project.id === 5) {
+        // GitHub
+        const width = 800;
+        const height = 600;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+
+        window.open(
+          "https://github.com/TheCliCommander",
+          "GitHub Profile",
+          `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+        );
+      } else {
         this.activeProject = project;
-        this.hoveredProject = null;
-        return;
       }
-      this.activeProject = project;
-      this.hoveredProject = null;
     },
     closeProject() {
-      this.minimizedProjects = this.minimizedProjects.filter(
-        (p) => p.id !== this.activeProject.id
-      );
-      this.activeProject = null;
+      if (this.activeProject) {
+        this.minimizedProjects = this.minimizedProjects.filter(
+          (p) => p.id !== this.activeProject.id
+        );
+        this.activeProject = null;
+      }
     },
 
     setHoveredProject(project) {
@@ -210,35 +211,33 @@ export default {
     toggleActivitiesMenu() {
       this.showActivitiesMenu = !this.showActivitiesMenu;
     },
-    handleMenuClick(section) {
+    handleMenuClick(action) {
       this.showActivitiesMenu = false;
-      // Handle navigation/actions here
-      switch (section) {
-        case "summary":
-          console.log("Professional Summary");
-          break;
-        case "resume":
-          console.log("Navigating to Resume");
-          break;
-        case "web":
-          console.log("Navigating to Web Projects");
-          break;
-        case "desktop":
-          console.log("Navigating to Desktop Apps");
-          break;
-        case "cli":
-          console.log("Navigating to Command Line Tools");
-          break;
+      if (action === "resume") {
+        const resumeProject = this.projects.find((p) => p.id === 4);
+        if (resumeProject) {
+          this.openProject(resumeProject);
+        }
+      }
+      if (action === "summary") {
+        // Handle summary action
       }
     },
     handleMinimize(project) {
       this.minimizedProjects.push(project);
+      this.activeProject = null;
     },
     restoreProject(project) {
+      // First set as active project
+      this.activeProject = project;
+
+      // Then remove from minimized list
       this.minimizedProjects = this.minimizedProjects.filter(
         (p) => p.id !== project.id
       );
-      this.activeProject = project;
+
+      // Close activities menu
+      this.showActivitiesMenu = false;
     },
     openCodeEditor() {
       window.open("https://michaelryberg.github.io/code-editor/", "_blank");
@@ -247,24 +246,30 @@ export default {
   mounted() {
     setInterval(this.updateTime, 1000);
     this.updateTime();
-    document.addEventListener("click", (event) => {
+
+    // Store the handler as a property so we can remove it later
+    this.documentClickHandler = (event) => {
       const isClickInsideDock = event.target.closest(".dock-icon");
       const isClickInsideTerminal = event.target.closest(".terminal");
       const isClickInsideVideo = event.target.closest(".video-container video");
       const isClickInsideHoverImage = event.target.closest(".hover-image");
       const isClickInsideWindow = event.target.closest(".window");
+      const isClickInsideActivities = event.target.closest(".activities-menu");
 
       if (
         isClickInsideDock ||
         isClickInsideTerminal ||
         isClickInsideVideo ||
         isClickInsideHoverImage ||
-        isClickInsideWindow
+        isClickInsideWindow ||
+        isClickInsideActivities
       ) {
         return;
       }
       this.closeProject();
-    });
+    };
+
+    document.addEventListener("click", this.documentClickHandler);
   },
   beforeUnmount() {
     document.removeEventListener("click", this.closeProject);

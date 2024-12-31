@@ -1,7 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
-  parallel: true, // Enable parallel processing
+  parallel: true,
   configureWebpack: {
     cache: {
       type: 'filesystem',
@@ -17,10 +17,17 @@ module.exports = defineConfig({
     }
   },
   devServer: {
-    hot: true,
+    hot: 'only',
     liveReload: true,
+    watchFiles: {
+      paths: ['src/**/*.*'],
+      options: {
+        usePolling: true
+      }
+    },
     client: {
-      overlay: false
+      overlay: false,
+      webSocketURL: 'auto://0.0.0.0:0/ws'
     }
   }
 });

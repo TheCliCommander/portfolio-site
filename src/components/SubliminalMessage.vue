@@ -226,6 +226,7 @@ export default {
   height: calc(100% - 76px);
   overflow-y: auto;
   background: #1e1e1e;
+  border-radius: 0 0 8px 8px;
 }
 
 .terminal-output {
@@ -236,7 +237,7 @@ export default {
 }
 
 .terminal-line {
-  padding-left: 1.5rem;
+  padding-left: 1rem;
   color: #ffffff;
   opacity: 0;
   transform: translateY(5px);

@@ -6,10 +6,12 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --cache",
-    "deploy": "npm run build && gh-pages -d dist"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "highlight.js": "^11.11.1",
     "vue": "^3.2.13"
   },
   "devDependencies": {

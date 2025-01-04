@@ -132,7 +132,9 @@ export default {
         {
           id: 2,
           title: "Code Editor",
-          icon: "/portfolio-site/icons/icons8-document-94.png",
+          icon: process.env.NODE_ENV === 'production' 
+            ? '/portfolio-site/public/icons/icons8-document-94.png'
+            : '/icons/icons8-document-94.png',
           darkImage: require("@/assets/images/darkMode.png"),
           lightImage: require("@/assets/images/lightMode.png"),
           description:
@@ -142,21 +144,27 @@ export default {
         {
           id: 3,
           title: "On Time",
-          icon: "/portfolio-site/icons/codeblocks.svg",
+          icon: process.env.NODE_ENV === 'production'
+            ? '/portfolio-site/public/icons/codeblocks.svg'
+            : '/icons/codeblocks.svg',
           image: OnTime2,
           video: require("@/components/videos/OnTime.mp4"),
         },
         {
           id: 4,
           title: "Resume",
-          icon: "/portfolio-site/icons/preferences-system.svg",
+          icon: process.env.NODE_ENV === 'production'
+            ? '/portfolio-site/public/icons/preferences-system.svg'
+            : '/icons/preferences-system.svg',
           isResume: true,
           description: "Interactive Resume",
         },
         {
           id: 5,
           title: "Github",
-          icon: "/portfolio-site/icons/icons8-github-94.png",
+          icon: process.env.NODE_ENV === 'production'
+            ? '/portfolio-site/public/icons/icons8-github-94.png'
+            : '/icons/icons8-github-94.png',
           image: require("@/assets/images/GithubProfile.png"),
           description: "My Github featuring more of my projects",
         },

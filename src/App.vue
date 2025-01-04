@@ -123,7 +123,7 @@ export default {
         {
           id: 1,
           title: "Command Line Passbox",
-          icon: "/icons/terminal.svg",
+          icon: "/portfolio-site/icons/terminal.svg",
           image: PassBox2,
           description:
             "A command line tool for generating secure passwords and storing them in a sqlite database. It is built with Python and SQLlite. Can be used on any platform, Linux, Mac, Windows.",
@@ -132,7 +132,7 @@ export default {
         {
           id: 2,
           title: "Code Editor",
-          icon: "/icons/icons8-document-94.png",
+          icon: "/portfolio-site/icons/icons8-document-94.png",
           darkImage: require("@/assets/images/darkMode.png"),
           lightImage: require("@/assets/images/lightMode.png"),
           description:
@@ -142,21 +142,21 @@ export default {
         {
           id: 3,
           title: "On Time",
-          icon: "/icons/codeblocks.svg",
+          icon: "/portfolio-site/icons/codeblocks.svg",
           image: OnTime2,
           video: require("@/components/videos/OnTime.mp4"),
         },
         {
           id: 4,
           title: "Resume",
-          icon: "/icons/preferences-system.svg",
+          icon: "/portfolio-site/icons/preferences-system.svg",
           isResume: true,
           description: "Interactive Resume",
         },
         {
           id: 5,
           title: "Github",
-          icon: "/icons/icons8-github-94.png",
+          icon: "/portfolio-site/icons/icons8-github-94.png",
           image: require("@/assets/images/GithubProfile.png"),
           description: "My Github featuring more of my projects",
         },

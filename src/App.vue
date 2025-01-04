@@ -57,6 +57,7 @@
           @mouseover="setHoveredProject(project)"
           @mouseleave="clearHoveredProject"
         >
+          <div class="dock-title">{{ project.title }}</div>
           <img :src="project.icon" :alt="project.title" />
           <span class="tooltip">{{ project.title }}</span>
           <div v-if="hoveredProject === project" class="hover-image">
@@ -122,8 +123,11 @@ export default {
       projects: [
         {
           id: 1,
-          title: "Command Line Passbox",
-          icon: "/portfolio-site/icons/terminal.svg",
+          title: "CLI Tool",
+          icon:
+            process.env.NODE_ENV === "production"
+              ? "/portfolio-site/icons/terminal.svg"
+              : "/icons/terminal.svg",
           image: PassBox2,
           description:
             "A command line tool for generating secure passwords and storing them in a sqlite database. It is built with Python and SQLlite. Can be used on any platform, Linux, Mac, Windows.",
@@ -131,10 +135,11 @@ export default {
         },
         {
           id: 2,
-          title: "Code Editor",
-          icon: process.env.NODE_ENV === 'production' 
-            ? '/portfolio-site/public/icons/icons8-document-94.png'
-            : '/icons/icons8-document-94.png',
+          title: "IDE",
+          icon:
+            process.env.NODE_ENV === "production"
+              ? "/portfolio-site/icons/icons8-document-94.png"
+              : "/icons/icons8-document-94.png",
           darkImage: require("@/assets/images/darkMode.png"),
           lightImage: require("@/assets/images/lightMode.png"),
           description:
@@ -144,27 +149,30 @@ export default {
         {
           id: 3,
           title: "On Time",
-          icon: process.env.NODE_ENV === 'production'
-            ? '/portfolio-site/public/icons/codeblocks.svg'
-            : '/icons/codeblocks.svg',
+          icon:
+            process.env.NODE_ENV === "production"
+              ? "/portfolio-site/icons/codeblocks.svg"
+              : "/icons/codeblocks.svg",
           image: OnTime2,
           video: require("@/components/videos/OnTime.mp4"),
         },
         {
           id: 4,
           title: "Resume",
-          icon: process.env.NODE_ENV === 'production'
-            ? '/portfolio-site/public/icons/preferences-system.svg'
-            : '/icons/preferences-system.svg',
+          icon:
+            process.env.NODE_ENV === "production"
+              ? "/portfolio-site/icons/preferences-system.svg"
+              : "/icons/preferences-system.svg",
           isResume: true,
           description: "Interactive Resume",
         },
         {
           id: 5,
           title: "Github",
-          icon: process.env.NODE_ENV === 'production'
-            ? '/portfolio-site/public/icons/icons8-github-94.png'
-            : '/icons/icons8-github-94.png',
+          icon:
+            process.env.NODE_ENV === "production"
+              ? "/portfolio-site/icons/icons8-github-94.png"
+              : "/icons/icons8-github-94.png",
           image: require("@/assets/images/GithubProfile.png"),
           description: "My Github featuring more of my projects",
         },
@@ -414,6 +422,7 @@ body {
   overflow: hidden;
   color: white;
   background: rgba(0, 0, 0, 0.3);
+  margin-top: -20px;
 }
 
 .bio-container::before {
@@ -541,22 +550,34 @@ body {
 
 .tooltip {
   position: absolute;
-  top: -30px;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--top-bar-bg);
-  padding: 4px 8px;
-  border-radius: 15px;
-  font-size: 12px;
+  background: rgba(0, 0, 0, 0.8);
   color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s ease;
   pointer-events: none;
+  margin-bottom: 8px;
 }
 
 .dock-icon:hover .tooltip {
   opacity: 1;
+  animation: floatTitle 2s ease-in-out infinite;
+}
+
+@keyframes floatTitle {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -5px);
+  }
 }
 
 .hover-image {
@@ -750,5 +771,50 @@ body {
 .icons8-attribution a {
   color: inherit;
   text-decoration: none;
+}
+
+.bio {
+  font-size: 0.9rem;
+}
+
+.dock-title {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  animation: floatTitle 2s ease-in-out infinite;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes floatTitle {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+/* remove this if it breaks things */
+@media (max-width: 768px) {
+  .bio-container {
+    max-width: 90%;
+    margin: 1rem auto;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .desktop-content {
+    padding: 60px 10px;
+  }
+
+  .dock-icon:hover .hover-image {
+    opacity: 0; /* Ensure hover images don't appear on hover */
+  }
 }
 </style>

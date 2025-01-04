@@ -268,4 +268,45 @@ export default {
 .terminal-prompt .separator {
   color: #d3d3d3;
 }
+
+@media (max-width: 768px) {
+  .window-container {
+    width: 90vw;
+    height: 70vh;
+  }
+
+  .window {
+    width: 100%;
+    height: 100%;
+  }
+
+  .window-header {
+    padding: 6px 10px;
+    height: 30px;
+  }
+
+  .window-title {
+    font-size: 12px;
+  }
+
+  .window-controls button {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+
+  .window-content {
+    padding: 15px;
+    height: calc(100% - 60px);
+  }
+
+  .terminal-output {
+    font-size: 12px;
+  }
+
+  .terminal-line {
+    padding-left: 0.8rem;
+    margin: 0.08rem 0;
+  }
+}
 </style>

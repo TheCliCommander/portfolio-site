@@ -48,7 +48,8 @@ export default {
 
 .window-content {
   flex: 1;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .close-btn {

@@ -173,6 +173,7 @@ export default {
   padding: 20px;
   height: calc(100% - 76px);
   overflow-y: auto;
+  overflow-x: auto;
 }
 
 .video-wrapper {
@@ -192,6 +193,15 @@ export default {
 .code-editor-wrapper {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  min-width: 768px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 768px) {
+  .code-editor-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
 </style>

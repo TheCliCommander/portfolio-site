@@ -91,6 +91,12 @@
       @close="closeProject"
       @minimize="handleMinimize"
     />
+
+    <ProfessionalSummary
+      v-if="showProfessionalSummary"
+      @close="showProfessionalSummary = false"
+      @minimize="handleProfessionalSummaryMinimize"
+    />
   </div>
 </template>
 
@@ -100,12 +106,14 @@ import PassBox2 from "./components/images/PassBox2.png";
 import OnTime2 from "./components/images/OnTime2.png";
 import selfCutout from "./components/images/selfCutout.png";
 import ProjectWindow from "./components/ProjectWindow.vue";
+import ProfessionalSummary from "./components/ProfessionalSummary.vue";
 
 export default {
   name: "App",
   components: {
     SubliminalMessage,
     ProjectWindow,
+    ProfessionalSummary,
   },
   setup() {
     return {
@@ -182,6 +190,7 @@ export default {
       showTerminal: false,
       terminalMessages: [],
       minimizedProjects: [],
+      showProfessionalSummary: false,
     };
   },
   methods: {
@@ -194,7 +203,7 @@ export default {
     },
     openProject(project) {
       if (project.id === 5) {
-        // GitHub
+        // GitHub handling
         const width = 800;
         const height = 600;
         const left = (window.screen.width - width) / 2;
@@ -205,12 +214,19 @@ export default {
           "GitHub Profile",
           `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
         );
+      } else if (project.isProfessionalSummary) {
+        this.showProfessionalSummary = true;
       } else {
         this.activeProject = project;
       }
     },
     closeProject() {
-      if (this.activeProject) {
+      if (this.showProfessionalSummary) {
+        this.showProfessionalSummary = false;
+        this.minimizedProjects = this.minimizedProjects.filter(
+          (p) => p.id !== "summary"
+        );
+      } else if (this.activeProject) {
         this.minimizedProjects = this.minimizedProjects.filter(
           (p) => p.id !== this.activeProject.id
         );
@@ -234,9 +250,8 @@ export default {
         if (resumeProject) {
           this.openProject(resumeProject);
         }
-      }
-      if (action === "summary") {
-        // Handle summary action
+      } else if (action === "summary") {
+        this.showProfessionalSummary = true;
       }
     },
     handleMinimize(project) {
@@ -244,8 +259,11 @@ export default {
       this.activeProject = null;
     },
     restoreProject(project) {
-      // First set as active project
-      this.activeProject = project;
+      if (project.isProfessionalSummary) {
+        this.showProfessionalSummary = true;
+      } else {
+        this.activeProject = project;
+      }
 
       // Then remove from minimized list
       this.minimizedProjects = this.minimizedProjects.filter(
@@ -257,6 +275,14 @@ export default {
     },
     openCodeEditor() {
       window.open("https://michaelryberg.github.io/code-editor/", "_blank");
+    },
+    handleProfessionalSummaryMinimize() {
+      this.minimizedProjects.push({
+        id: "summary",
+        title: "Professional Summary",
+        isProfessionalSummary: true,
+      });
+      this.showProfessionalSummary = false;
     },
   },
   mounted() {
@@ -701,6 +727,18 @@ body {
   transform-style: preserve-3d;
   perspective: 500px;
   height: 5rem;
+  margin-bottom: 1rem;
+  animation: floatText 2s ease-in-out infinite;
+}
+
+@keyframes floatText {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .text {

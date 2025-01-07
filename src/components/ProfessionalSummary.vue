@@ -98,9 +98,11 @@ export default {
   border-radius: 8px;
   width: 80%;
   max-width: 800px;
-  height: 60vh;
+  height: 80vh;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .window.maximized {
@@ -167,14 +169,16 @@ export default {
 
 .window-content {
   padding: 20px;
-  height: calc(100% - 76px);
+  flex: 1;
   overflow-y: auto;
   color: #ffffff;
+  min-height: 0;
 }
 
 .summary-container {
   max-width: 800px;
   margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 h2 {
@@ -207,5 +211,18 @@ li::before {
   position: absolute;
   left: 0;
   color: var(--accent-blue);
+}
+
+@media (max-width: 768px) {
+  .window {
+    width: 90%;
+    height: 70vh;
+    margin: 20px 0;
+  }
+
+  .window-container {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
 }
 </style>
